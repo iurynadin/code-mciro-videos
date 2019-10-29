@@ -20,7 +20,9 @@ class CategoryController extends Controller
     
     public function store(Request $request)
     {
-        $this->validate($request, $this->rules);
+        $this->validate($request, array_merge($this->rules, [
+            'id' => 'uuid'
+        ]));
         return Category::create($request->all());
     }
 
