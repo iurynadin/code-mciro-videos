@@ -23,7 +23,9 @@ class CategoryController extends Controller
         $this->validate($request, array_merge($this->rules, [
             'id' => 'uuid'
         ]));
-        return Category::create($request->all());
+        $category = Category::create($request->all());
+        $category->refresh();
+        return $category;
     }
 
     

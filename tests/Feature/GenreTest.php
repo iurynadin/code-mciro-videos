@@ -31,9 +31,10 @@ class GenreTest extends TestCase
 
     public function testList()
     {
-        factory(Genre::class,1)->create();
+        factory(Genre::class)->create();
         $genres = Genre::all();
         $this->assertCount(1, $genres);
+        
         $genreKey = array_keys($genres->first()->getAttributes());
         $this->assertEqualsCanonicalizing(
             ['id','name','is_active','created_at','updated_at','deleted_at'],
@@ -50,6 +51,7 @@ class GenreTest extends TestCase
         ]);
         $genre->refresh();
 
+        $this->assertEquals(36, strlen($genre->id));
         $this->assertEquals('Test1', $genre->name);
         $this->assertTrue($genre->is_active);
 
