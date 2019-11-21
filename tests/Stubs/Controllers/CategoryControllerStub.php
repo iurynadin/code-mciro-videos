@@ -1,0 +1,33 @@
+<?php
+
+namespace Tests\Stubs\Controllers;
+
+// use App\Models\Category;
+// use Illuminate\Http\Request;
+// use App\Http\Controllers\Controller;
+use Tests\Stubs\Models\CategoryStub;
+use App\Http\Controllers\Api\BasicCrudController;
+
+class CategoryControllerStub extends BasicCrudController
+{
+    private $rules = [
+        'name' => 'required|max:255',
+        'description' => 'nullable',
+        'is_active' => 'boolean',
+    ];
+
+    protected function model()
+    {
+        return CategoryStub::class;
+    }
+
+    protected function rulesStore()
+    {
+        return $this->rules;
+    }
+
+    protected function rulesUpdate()
+    {
+        return $this->rules;
+    }
+}
