@@ -3,45 +3,46 @@
 namespace Tests\Unit\Model;
 
 use Tests\TestCase;
-use App\Models\Category;
+use App\Models\Genre;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CategoryTest extends TestCase
+class GenreUnitTest extends TestCase
 {
-
-    private $category;
+    private $genre;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->category = new Category();
+        $this->genre = new Genre();
     }
 
     public function testFillableAttribute()
     {
-        $fillable = ['name', 'description', 'is_active'];
-        $this->assertEquals($fillable, $this->category->getFillable());
+        $fillable = ['name', 'is_active'];
+        $this->assertEquals($fillable, $this->genre->getFillable());
     }
 
     public function testCastsAttribute()
     {
         $casts = ['id' => 'string', 'is_active' => 'boolean'];
-        $this->assertEquals($casts, $this->category->getCasts());
+        $this->assertEquals($casts, $this->genre->getCasts());
     }
 
     public function testIncrementingAttribute()
     {
-        $this->assertFalse($this->category->incrementing);
+        $this->assertFalse($this->genre->incrementing);
     }
 
+    
     public function testDateAttribute()
     {
         $dates = ['deleted_at','created_at','updated_at'];
         foreach ($dates as $date) {
-            $this->assertContains($date, $this->category->getDates());
+            $this->assertContains($date, $this->genre->getDates());
         }
-        $this->assertCount(count($dates), $this->category->getDates());
+        $this->assertCount(count($dates), $this->genre->getDates());
     }
 
-
+    
 }

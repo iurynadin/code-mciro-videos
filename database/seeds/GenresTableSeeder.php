@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\Genre;
+use App\Models\Category;
+use Illuminate\Database\Seeder;
 
 class GenresTableSeeder extends Seeder
 {
@@ -12,13 +13,22 @@ class GenresTableSeeder extends Seeder
      */
     public function run()
     {
-        $genres = ['Terror','Comedy','Romance', 'Science Fiction','Drama','Documentary'];
+        $categories = Category::all();
+        factory(\App\Models\Genre::class,100)
+            ->create()
+            ->each(function(Genre $genre) use ($categories){
+                $categoriesId = $categories->random(5)->pluck('id')->toArray();
+                $genre->categories()->attach($categoriesId);
+            });
 
-        foreach ($genres as $key => $value) {
-            $data = Genre::create([
-                'name' => $value
-            ]);
-        }
+        // antigo
+
+        // $genres = ['Terror','Comedy','Romance', 'Science Fiction','Drama','Documentary'];
+        // foreach ($genres as $key => $value) {
+        //     $data = Genre::create([
+        //         'name' => $value
+        //     ]);
+        // }
 
     }
 }

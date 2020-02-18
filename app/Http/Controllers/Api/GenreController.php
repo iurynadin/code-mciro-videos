@@ -10,8 +10,45 @@ class GenreController extends BasicCrudController
 {
     private $rules = [
         'name' => 'required|max:255',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'categories_id' => 'required|array|exists:categories,id,deleted_at,NULL'
+        // deleted_at,NULL => deleted_at == NULL
     ];
+
+    // public function index()
+    // {
+    //     return Genre::all();
+    // }
+
+    public function store(Request $request)
+    {
+        $validatedData = $this->validate($request, $this->rulesStore());
+        $self = $this;
+        $obj = \DB::transaction(function () use ($self,$request, $validatedData) {
+            $obj = $this->model()::create($validatedData);
+            $self->handleRelations($obj, $request);
+            return $obj;
+        });
+        $obj->refresh();
+        return $obj;
+    }
+
+    public function update(Request $request, $id)
+    {
+        $obj = $this->findOrFail($id);
+        $validatedData = $this->validate($request, $this->rulesUpdate());
+        $self = $this;
+        \DB::transaction(function () use ($self, $request, $obj, $validatedData){
+            $obj->update($validatedData);
+            $self->handleRelations($obj, $request);
+        });
+        return $obj;
+    }
+
+    protected function handleRelations($genre, Request $request)
+    {
+        $genre->categories()->sync($request->get('categories_id'));
+    }
 
     protected function model()
     {
@@ -28,34 +65,4 @@ class GenreController extends BasicCrudController
         return $this->rules;
     }
 
-    // public function index()
-    // {
-    //     return Genre::all();
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     $this->validate($request, $this->rules);
-    //     $genre = Genre::create($request->all());
-    //     $genre->refresh();
-    //     return $genre;
-    // }
-
-    // public function show(Genre $genre)
-    // {
-    //     return $genre;
-    // }
-
-    // public function update(Request $request, Genre $genre)
-    // {
-    //     $this->validate($request, $this->rules);
-    //     $genre->update($request->all());
-    //     return $genre;
-    // }
-
-    // public function destroy(Genre $genre)
-    // {
-    //     $genre->delete();
-    //     return response()->noContent(); //204
-    // }
 }
