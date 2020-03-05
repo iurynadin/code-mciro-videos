@@ -14,11 +14,13 @@ class Video extends Model
 
     protected $fillable = [
         'title',
-        'description',
+        'description', 
         'year_launched',
         'opened',
         'rating',
-        'duration'
+        'duration',
+        'video_file',
+        'thumb_file'
     ];
 
     protected $dates = ['deleted_at'];
@@ -45,14 +47,13 @@ class Video extends Model
             /** @var Video $obj */
             $obj =  static::query()->create($attributes);
             static::handleRelations($obj, $attributes);
-            //uploads aqui
             $obj->uploadFiles($files);
             \DB::commit();
             return $obj;
         }catch(\Exception $e) {
             if(isset($obj)){
-                //excluir os arquivos de upload - caso dê problema e fique faltando o uload de algum arquivo, vai excluir os demais
                 //excluir os arquivos de upload
+                $obj->deleteFiles($files);
             }
             \DB::rollBack();
             throw $e;
@@ -62,18 +63,24 @@ class Video extends Model
     // override do update
     public function update(array $attributes = [], array $options = [])
     {
+        $files = self::extractFiles($attributes);
+        
         try{
             \DB::beginTransaction();
             $saved = parent::update($attributes, $options);
             static::handleRelations($this, $attributes);
             if($saved){
                 // uploads aqui
-                // excluir os antigos
+                $this->uploadFiles($files);
             }
             \DB::commit();
+            if($saved && count($files)){
+                // excluir os antigos
+                $this->deleteOldFiles();
+            }
             return $saved;
         }catch(\Exception $e) {
-            //excluir os arquivos de upload
+            $this->deleteFiles($files);
             \DB::rollBack();
             throw $e;
         }

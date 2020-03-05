@@ -21,7 +21,7 @@ class UploadFilesUnitTest extends TestCase
 
     public function testUploadFile()
     {
-        \Storage::fake(); //vai salvar o arquivo em uma pasta dentro de framework/testing, para nao acumular arquivo de teste na pagina storage/app
+        // \Storage::fake(); //vai salvar o arquivo em uma pasta dentro de framework/testing, para nao acumular arquivo de teste na pagina storage/app
         $file = UploadedFile::fake()->create('video.mp4');
         $this->obj->uploadFile($file);
         \Storage::assertExists("1/{$file->hashName()}");
@@ -50,6 +50,21 @@ class UploadFilesUnitTest extends TestCase
         $this->obj->uploadFile($file);
         $this->obj->deleteFile($file);
         \Storage::assertMissing("1/{$file->hashName()}");
+    }
+
+    public function testDeleteOldFile()
+    {
+        \Storage::fake();
+        $file1 = UploadedFile::fake()->create('video1.mp4')->size(1);
+        $file2 = UploadedFile::fake()->create('video2.mp4')->size(1);
+        $this->obj->uploadFiles([$file1, $file2]);
+        $this->obj->deleteOldFiles();
+        $this->assertCount(2, \Storage::allFiles());
+
+        $this->obj->oldFiles = [$file1->hashName()];
+        $this->obj->deleteOldFiles();
+        \Storage::assertMissing("1/{$file1->hashName()}");
+        \Storage::assertExists("1/{$file2->hashName()}");
     }
     
 

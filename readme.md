@@ -14,7 +14,6 @@ php artisan ide-helper:models
 
 ```
 
-6
 ### Para Iniciar
 1. Buildar os servicos:
 ```docker-compose up -d --build```
