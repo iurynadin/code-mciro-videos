@@ -10,7 +10,7 @@ steps:
             - --ciphertext-file=./storage/credentials/google/service-account-storage.json.enc 
             - --plaintext-file=./storage/credentials/google/service-account-storage.json 
             - --location=global 
-            - --keyring=testing-lesson 
+            - --keyring=testing-lesson
             - --key=service-account
 
     -   id: "Rodando docker-compose"
