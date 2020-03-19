@@ -49,3 +49,5 @@ $obj = \DB::transaction(function() use($request, $validatedData){
     return $obj;
 });
 ```
+
+## Não está funcionando o deploy automatico no GCS ao fazer o commit
