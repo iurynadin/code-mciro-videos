@@ -5,11 +5,11 @@ steps:
     -   id: 'Gerando service-account-storage.json'
         name: 'gcr.io/cloud-builders/gcloud'
         args:
-            - kms 
+            - kms
             - decrypt
-            - --ciphertext-file=./storage/credentials/google/service-account-storage.json.enc 
-            - --plaintext-file=./storage/credentials/google/service-account-storage.json 
-            - --location=global 
+            - --ciphertext-file=./storage/credentials/google/service-account-storage.json.enc
+            - --plaintext-file=./storage/credentials/google/service-account-storage.json
+            - --location=global
             - --keyring=testing-lesson
             - --key=service-account
 
