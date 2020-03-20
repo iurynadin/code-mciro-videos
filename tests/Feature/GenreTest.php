@@ -16,7 +16,6 @@ class GenreTest extends TestCase
     
     use DatabaseMigrations;
 
-
     public function mockUuid()
     {
         $stringUuid = Uuid::uuid4()->toString();

@@ -18,6 +18,7 @@ class CastMemberControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
         $this->castMember = factory(CastMember::class)->create([
             'type' => CastMember::TYPE_DIRECTOR
         ]);
@@ -34,7 +35,9 @@ class CastMemberControllerTest extends TestCase
     public function testShow()
     {
         
-        $response = $this->get(route('cast_members.show',['cast_member' => $this->castMember->id ]));
+        $response = $this->get(
+            route('cast_members.show',['cast_member' => $this->castMember->id ])
+        );
         $response
             ->assertStatus(200)
             ->assertJson($this->castMember->toArray());
@@ -44,9 +47,11 @@ class CastMemberControllerTest extends TestCase
     {
         $data = [ 'name' => '' , 'type' => '' ];
         $this->assertInvalidationInStoreAction($data, 'required');
+        $this->assertInvalidationInUpdateAction($data, 'required');
 
         $data = [ 'type' => 'a'];
         $this->assertInvalidationInStoreAction($data, 'in');
+        $this->assertInvalidationInUpdateAction($data, 'in');
     }
 
 
@@ -54,16 +59,19 @@ class CastMemberControllerTest extends TestCase
     {
         $data = [
             [
-                'name' => 'test',
+                'name' => 'test_name',
                 'type' => CastMember::TYPE_DIRECTOR
             ],
             [
-                'name' => 'test',
+                'name' => 'test_name',
                 'type' => CastMember::TYPE_ACTOR
             ]
         ];
         foreach($data as $key => $value){
-            $response = $this->assertStore($value, $value + ['deleted_at' => null]);
+            $response = $this->assertStore(
+                $value, 
+                $value + ['deleted_at' => null]
+            );
             $response->assertJsonStructure([
                 'created_at','updated_at'
             ]);
@@ -73,24 +81,28 @@ class CastMemberControllerTest extends TestCase
     public function testUpdate()
     {
         $data = [
-            'name' => 'test',
+            'name' => 'test_name',
             'type' => CastMember::TYPE_ACTOR
         ];
-        $response = $this->assertUpdate($data, $data + ['deleted_at' => null]);
-        $response->ASSERTJSONSTRUCTURE([
-            'created_at', 'updated_at'
+        $response = $this->assertUpdate(
+            $data, 
+            $data + ['deleted_at' => null]
+        );
+        $response->assertJsonStructure([
+            'created_at',
+            'updated_at'
         ]);
     }
 
-    public function testeDelete()
+    public function testeDestroy()
     {
-        $response = $this->json('DELETE', route('cast_members.destroy',['cast_member' => $this->castMember->id]));
+        $response = $this->json(
+            'DELETE',
+            route('cast_members.destroy',['cast_member' => $this->castMember->id])
+        );
         $response->assertStatus(204);
         $this->assertNull(CastMember::find($this->castMember->id));
         $this->assertNotNull(CastMember::withTrashed()->find($this->castMember->id));
-        
-        // $genre->restore();
-        // $this->assertNotNull(Genre::find($genre->id));
     }
 
     protected function routeStore()

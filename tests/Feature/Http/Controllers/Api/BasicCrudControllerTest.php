@@ -6,9 +6,9 @@ use Tests\TestCase;
 use Illuminate\Http\Request;
 use Tests\Stubs\Models\CategoryStub;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Controllers\Api\BasicCrudController;
 use Tests\Stubs\Controllers\CategoryControllerStub;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BasicCrudControllerTest extends TestCase
 {
@@ -33,8 +33,8 @@ class BasicCrudControllerTest extends TestCase
     public function testIndex()
     {
         $category = CategoryStub::create(['name' => 'teste_name', 'description' => 'test_description']);
-        // $controller = new CategoryControllerStub();
         $result = $this->controller->index()->toArray();
+
         $this->assertEquals([$category->toArray()], $result);
     }
 
@@ -93,6 +93,7 @@ class BasicCrudControllerTest extends TestCase
 
     public function testUpdate()
     {
+        /** @var CategoryStub $category */
         $category = CategoryStub::create(['name' => 'teste_name', 'description' => 'test_description ']);
         $request = \Mockery::mock(Request::class);
         $request->shouldReceive('all')

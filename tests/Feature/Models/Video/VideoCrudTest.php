@@ -2,13 +2,16 @@
 
 namespace Tests\Feature\Models\Video;
 
-use App\Models\Video;
 use App\Models\Genre;
+use App\Models\Video;
 use App\Models\Category;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class VideoCrudTest extends BaseVideoTestCase
 {
+
+    use DatabaseMigrations;
 
     private $fileFieldsData = [];
 
@@ -22,7 +25,7 @@ class VideoCrudTest extends BaseVideoTestCase
 
     public function testList()
     {
-        factory(Video::class)->create();
+        factory(Video::class,1 )->create();
         $videos = Video::all();
         $this->assertCount(1, $videos);
 
@@ -36,10 +39,13 @@ class VideoCrudTest extends BaseVideoTestCase
                 'opened',
                 'rating',
                 'duration',
+                'thumb_file',
+                'banner_file',
+                'trailer_file',
                 'video_file',
+                'deleted_at',
                 'created_at',
-                'updated_at',
-                'deleted_at'
+                'updated_at'
             ],
             $videosKeys
         );

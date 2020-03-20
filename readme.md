@@ -14,6 +14,9 @@ php artisan ide-helper:models
 
 ```
 
+docker run -it --link micro-videos-db:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
+
+
 ### Para Iniciar
 1. Buildar os servicos:
 ```docker-compose up -d --build```
@@ -24,6 +27,7 @@ php artisan ide-helper:models
 3. Acessar http://0.0.0.0:8000/
 
 Caso necessite de executar algum comando dentro do container: ```docker exec -it micro-videos-app bash```
+ou ```docker-compose exec micro-videos-app bash```
 
 <!-- continues from:  
 Implementando recurso de vídeo e rela... (Projeto Prático)
@@ -49,5 +53,3 @@ $obj = \DB::transaction(function() use($request, $validatedData){
     return $obj;
 });
 ```
-
-## Não está funcionando o deploy automatico no GCS ao fazer o commit
