@@ -16,17 +16,6 @@ class CategoryTest extends TestCase
 
     use DatabaseMigrations;
 
-    public function mockUuid()
-    {
-        $stringUuid = Uuid::uuid4()->toString();
-        $uuid = Uuid::fromString($stringUuid);
-        $factoryMock = \Mockery::mock(UuidFactory::class . '[uuid4]', [
-            'uuid4' => $uuid,
-        ]);
-        Uuid::setFactory($factoryMock);
-        return $uuid;
-    }
-
     /**
      * Test list categories
      *
@@ -90,19 +79,19 @@ class CategoryTest extends TestCase
 
     }
 
-    public function testCreateWithValidUuid()
-    {
-        $uuid = $this->mockUuid();
-        $this->assertTrue(Uuid::isValid($uuid));
+    // public function testCreateWithValidUuid()
+    // {
+    //     $uuid = $this->mockUuid();
+    //     $this->assertTrue(Uuid::isValid($uuid));
 
-        $category = Category::create([
-            'name' => 'Test1',
-            'is_active' => true,
-            'uuid' => $uuid->toString()
-        ]);
-        $category->refresh();
-        $this->assertEquals($uuid->toString(), $category->id);
-    }
+    //     $category = Category::create([
+    //         'name' => 'Test1',
+    //         'is_active' => true,
+    //         'uuid' => $uuid->toString()
+    //     ]);
+    //     $category->refresh();
+    //     $this->assertEquals($uuid->toString(), $category->id);
+    // }
 
     /**
      * update a category
