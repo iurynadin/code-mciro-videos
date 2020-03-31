@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Genre;
 use App\Models\Video;
 use App\Models\Category;
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 
@@ -36,6 +37,20 @@ abstract class BaseVideoControllerTestCase extends TestCase
             'categories_id' => [$category->id],
             'genres_id' => [$genre->id],
         ];
+    }
+
+    protected function assertIfFilesUrlExists(Video $video, TestResponse $response)
+    {
+        $fileFields = Video::$fileFields;
+        $data = $response->json('data');
+        $data = array_key_exists(0, $data) ? $data[0] : $data; //verifica se é uma coleção qeu dentro do data
+        foreach ($fileFields as $field ) {
+            $file = $video->{$field};
+            $this->assertEquals(
+                \Storage::url($video->relativeFilePath($file)),
+                $data[$field . '_url']
+            );
+        }
     }
 
 }

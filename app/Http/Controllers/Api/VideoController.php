@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Video;
-use App\Rules\GenresHasCategoriesRule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\VideoResource;
+use App\Rules\GenresHasCategoriesRule;
 
 /* Auto Commit - Padrão de banco de dados relacionais
 * Modo Transação. Checkpoints/Savepoints:
@@ -50,7 +51,10 @@ class VideoController extends BasicCrudController
         $self = $this;
         $obj = $this->model()::create($validatedData);
         $obj->refresh();
-        return $obj;
+        // return $obj;
+
+        $resource = $this->resource();
+        return new $resource($obj);
     }
 
 
@@ -61,7 +65,10 @@ class VideoController extends BasicCrudController
         $validatedData = $this->validate($request, $this->rulesUpdate());
         $self = $this;
         $obj->update($validatedData);
-        return $obj;
+        // return $obj;
+
+        $resource = $this->resource();
+        return new $resource($obj);
     }
 
     protected function addRuleIfGenreHasCategories(Request $request)
@@ -87,6 +94,16 @@ class VideoController extends BasicCrudController
     protected function rulesUpdate()
     {
         return $this->rules;
+    }
+
+    protected function resource()
+    {
+        return VideoResource::class;
+    }
+
+    protected function resourceCollection()
+    {
+        return $this->resource();
     }
 
 }

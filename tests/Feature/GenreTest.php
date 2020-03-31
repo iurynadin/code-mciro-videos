@@ -16,16 +16,16 @@ class GenreTest extends TestCase
     
     use DatabaseMigrations;
 
-    public function mockUuid()
-    {
-        $stringUuid = Uuid::uuid4()->toString();
-        $uuid = Uuid::fromString($stringUuid);
-        $factoryMock = \Mockery::mock(UuidFactory::class . '[uuid4]', [
-            'uuid4' => $uuid,
-        ]);
-        Uuid::setFactory($factoryMock);
-        return $uuid;
-    }
+    // public function mockUuid()
+    // {
+    //     $stringUuid = Uuid::uuid4()->toString();
+    //     $uuid = Uuid::fromString($stringUuid);
+    //     $factoryMock = \Mockery::mock(UuidFactory::class . '[uuid4]', [
+    //         'uuid4' => $uuid,
+    //     ]);
+    //     Uuid::setFactory($factoryMock);
+    //     return $uuid;
+    // }
 
 
     public function testList()
@@ -53,30 +53,7 @@ class GenreTest extends TestCase
         $this->assertEquals(36, strlen($genre->id));
         $this->assertEquals('Test1', $genre->name);
         $this->assertTrue($genre->is_active);
-
-        // $genre = Genre::create([
-        //     'name' => 'Test2',
-        //     'is_active' => false
-        // ]);
-        // $genre->refresh();
-        // $this->assertFalse($genre->is_active);
     }
-
-
-    public function testCreateWithValidUuid()
-    {
-        $uuid = $this->mockUuid();
-        $this->assertTrue(Uuid::isValid($uuid));
-
-        $genre = Genre::create([
-            'name' => 'Test1',
-            'is_active' => true,
-            'uuid' => $uuid->toString()
-        ]);
-        $genre->refresh();
-        $this->assertEquals($uuid->toString(), $genre->id);
-    }
-
 
     /**
      * update a category

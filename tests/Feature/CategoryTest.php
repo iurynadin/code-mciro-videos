@@ -79,20 +79,6 @@ class CategoryTest extends TestCase
 
     }
 
-    // public function testCreateWithValidUuid()
-    // {
-    //     $uuid = $this->mockUuid();
-    //     $this->assertTrue(Uuid::isValid($uuid));
-
-    //     $category = Category::create([
-    //         'name' => 'Test1',
-    //         'is_active' => true,
-    //         'uuid' => $uuid->toString()
-    //     ]);
-    //     $category->refresh();
-    //     $this->assertEquals($uuid->toString(), $category->id);
-    // }
-
     /**
      * update a category
      *

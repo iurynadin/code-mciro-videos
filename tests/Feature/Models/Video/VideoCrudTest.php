@@ -53,10 +53,6 @@ class VideoCrudTest extends BaseVideoTestCase
     
     public function testCreateWithBasicFields()
     {
-        // $fileFields = [];
-        // foreach (Video::$fileFields as $field) {
-        //     $fileFields[$field] = "$field.test";
-        // }
         $video = Video::create($this->data + $this->fileFieldsData);
         $video->refresh();
 
@@ -180,6 +176,7 @@ class VideoCrudTest extends BaseVideoTestCase
         $this->assertCount(0, $video->categories);
 
         $category = factory(Category::class)->create();
+        // dd($category, $video->categories);
         Video::handleRelations($video,[
             'categories_id' => [$category->id]
         ]);

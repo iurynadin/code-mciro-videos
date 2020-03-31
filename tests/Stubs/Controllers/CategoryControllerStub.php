@@ -6,6 +6,7 @@ namespace Tests\Stubs\Controllers;
 // use Illuminate\Http\Request;
 // use App\Http\Controllers\Controller;
 use Tests\Stubs\Models\CategoryStub;
+use App\Http\Resources\CategoryResource;
 use App\Http\Controllers\Api\BasicCrudController;
 
 class CategoryControllerStub extends BasicCrudController
@@ -29,5 +30,15 @@ class CategoryControllerStub extends BasicCrudController
     protected function rulesUpdate()
     {
         return $this->rules;
+    }
+
+    protected function resourceCollection()
+    {
+        return $this->resource();
+    }
+
+    protected function resource()
+    {
+        return CategoryResource::class;
     }
 }

@@ -53,3 +53,6 @@ $obj = \DB::transaction(function() use($request, $validatedData){
     return $obj;
 });
 ```
+
+
+<!-- continuar do video: Primeiro API Resource de Category -->
