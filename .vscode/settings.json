@@ -1,7 +1,7 @@
 {
     "better-phpunit.docker.enable": true,
     "better-phpunit.docker.command": "docker exec micro-videos-app",
-    "better-phpunit.phpunitBinary": "./vendor/bin/phpunit",
+    "better-phpunit.phpunitBinary": "./backend/vendor/bin/phpunit",
     "better-phpunit.docker.paths": {
         "/Users/iurynadin/Projects/Sites/tutorial/code-micro-videos": "/var/www"
     },
