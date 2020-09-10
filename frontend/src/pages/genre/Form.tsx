@@ -19,7 +19,8 @@ export const Form = () => {
 
     const buttonProps: ButtonProps = {
         className: classes.submit,
-        variant: "outlined",
+        color: 'secondary',
+        variant: 'contained'
     };
 
     const [ categories, setCategories ] = useState<any[]>([])
@@ -81,7 +82,12 @@ export const Form = () => {
             </TextField>
 
             <Box dir={"rtl"}>
-                <Button { ...buttonProps } onClick={() => onSubmit(getValues(), null)}>Salvar</Button> {/* onClick={() => console.log(getValues())} */}
+                <Button
+                    color={"primary"}
+                    { ...buttonProps }
+                    onClick={() => onSubmit(getValues(), null)}
+                    >Salvar
+                </Button> {/* onClick={() => console.log(getValues())} */}
                 <Button { ...buttonProps } type="submit">Salvar e continuar editando</Button>
             </Box>
         </form>
